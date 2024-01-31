@@ -16,13 +16,8 @@ jobs:
     - name: terraform fmt
       uses: dflook/terraform-fmt@v1
 
-    - name: setup git config
-      run: |
-        # set user.name 'TF Format', leave user.email empty
-        git config user.name "TF Format"
-        git config user.email "<>"
-
     - name: commit changed files into repository
       uses: stefanzweifel/git-auto-commit-action@v5
       with: 
         commit_message: terraform fmt
+        commit_author: "TF Formatter"
