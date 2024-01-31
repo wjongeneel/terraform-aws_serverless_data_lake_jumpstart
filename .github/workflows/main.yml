@@ -22,9 +22,8 @@ jobs:
         git config user.name "TF Format"
         git config user.email "<>"
 
-    - name: commit
-      run: |
-        # Stage the file, commit and push
-        git add . 
-        git commit -m "terraform fmt"
-        git push origin main
+    - name: commit changed files into repository
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with: 
+        commit_message: terraform fmt
+        
