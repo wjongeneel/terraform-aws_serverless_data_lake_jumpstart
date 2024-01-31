@@ -45,14 +45,16 @@ resource "aws_iam_role_policy" "glue-trust-policy" {
           "logs:CreateLogStream"
         ],
         "Resource" : [
-          "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws-glue/crawlers:log-stream:${aws_glue_crawler.nyc-taxi-yellow-trips-csv-crawler.name}"
+          "arn:aws:logs:*:*:*:/aws-glue/*",
+          "arn:aws:logs:*:*:*:/customlogs/*"
         ]
       },
       {
         "Effect" : "Allow",
         "Action" : [
           "glue:GetDatabase",
-          "glue:GetTable"
+          "glue:GetTable",
+          "glue:CreateTable"
         ],
         "Resource" : [
           "arn:aws:glue:${var.region}:${data.aws_caller_identity.current.account_id}:catalog",
