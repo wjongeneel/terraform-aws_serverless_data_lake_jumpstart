@@ -31,10 +31,33 @@ resource "aws_iam_role_policy" "glue-trust-policy" {
           "s3:ListBucket"
         ],
         "Resource" : [
-          "arn:aws:s3:::taxi-trip-data-raw/*",
-          "arn:aws:s3:::taxi-trip-data-raw",
-          "arn:aws:s3:::taxi-trip-data-transformed/*",
-          "arn:aws:s3:::taxi-trip-data-transformed"
+          "arn:aws:s3:::${aws_s3_bucket.taxi-trip-data-raw.bucket}/*",
+          "arn:aws:s3:::${aws_s3_bucket.taxi-trip-data-raw.bucket}",
+          "arn:aws:s3:::${aws_s3_bucket.taxi-trip-data-transformed.bucket}/*",
+          "arn:aws:s3:::${aws_s3_bucket.taxi-trip-data-transformed.bucket}"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream"
+        ],
+        "Resource" : [
+          "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws-glue/crawlers:log-stream:${aws_glue_crawler.nyc-taxi-yellow-trips-csv-crawler.name}"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "glue:GetDatabase",
+          "glue:GetTable"
+        ],
+        "Resource" : [
+          "arn:aws:glue:${var.region}:${data.aws_caller_identity.current.account_id}:catalog",
+          "arn:aws:glue:${var.region}:${data.aws_caller_identity.current.account_id}:database/${aws_glue_catalog_database.nyctaxi-db.name}",
+          "arn:aws:glue:${var.region}:${data.aws_caller_identity.current.account_id}:table/${aws_glue_catalog_database.nyctaxi-db.name}/*"
         ]
       }
     ]
