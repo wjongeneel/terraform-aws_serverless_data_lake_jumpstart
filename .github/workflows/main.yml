@@ -1,14 +1,30 @@
-name: terraform-lint
+name: Fix Terraform file formatting
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  delivery:
-
+  format:
     runs-on: ubuntu-latest
-
+    name: Check Terraform file are formatted correctly
     steps:
-    - name: Check out code
-      uses: actions/checkout@main
-    - name: Lint Terraform
-      uses: actionshub/terraform-lint@main
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: terraform fmt
+      uses: dflook/terraform-fmt@v1
+
+    - name: setup git config
+      run: |
+        # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+
+    - name: commit
+      run: |
+        # Stage the file, commit and push
+        git add . 
+        git commit -m "terraform fmt"
+        git push origin main
