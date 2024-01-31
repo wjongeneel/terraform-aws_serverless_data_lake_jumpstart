@@ -18,25 +18,25 @@ resource "aws_iam_role" "AWSGlueServiceRole-SDL-Jumpstart" {
 }
 
 resource "aws_iam_role_policy" "glue-trust-policy" {
-    name = "glue-trust-policy"
-    role = aws_iam_role.AWSGlueServiceRole-SDL-Jumpstart.id
-    policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::taxi-trip-data-raw/*",
-                "arn:aws:s3:::taxi-trip-data-raw",
-                "arn:aws:s3:::taxi-trip-data-transformed/*",
-                "arn:aws:s3:::taxi-trip-data-transformed"
-            ]
-        }
+  name = "glue-trust-policy"
+  role = aws_iam_role.AWSGlueServiceRole-SDL-Jumpstart.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        "Resource" : [
+          "arn:aws:s3:::taxi-trip-data-raw/*",
+          "arn:aws:s3:::taxi-trip-data-raw",
+          "arn:aws:s3:::taxi-trip-data-transformed/*",
+          "arn:aws:s3:::taxi-trip-data-transformed"
+        ]
+      }
     ]
   })
 }
