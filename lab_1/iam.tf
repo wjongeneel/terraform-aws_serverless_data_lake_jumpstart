@@ -40,6 +40,16 @@ resource "aws_iam_role_policy" "glue-trust-policy" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        "Resource" : [
+          "arn:aws:s3:::aws-glue-assets-${data.aws_caller_identity.current.account_id}-${var.region}/*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
           "logs:PutLogEvents",
           "logs:CreateLogGroup",
           "logs:CreateLogStream"
@@ -54,7 +64,8 @@ resource "aws_iam_role_policy" "glue-trust-policy" {
         "Action" : [
           "glue:GetDatabase",
           "glue:GetTable",
-          "glue:CreateTable"
+          "glue:CreateTable",
+          "glue:GetPartitions"
         ],
         "Resource" : [
           "arn:aws:glue:${var.region}:${data.aws_caller_identity.current.account_id}:catalog",

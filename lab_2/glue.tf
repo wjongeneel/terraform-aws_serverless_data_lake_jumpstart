@@ -76,3 +76,26 @@ resource "aws_glue_catalog_table" "taxi_zone_lookup" {
     }
   }
 }
+
+resource "aws_glue_job" "transform_nyc_taxi_trip_data" {
+  name              = "Transform NYC Taxi Trip Data"
+  number_of_workers = 10
+  worker_type       = "G.1X"
+  role_arn          = data.aws_iam_role.AWSGlueServiceRole-SDL-Jumpstart.arn
+  command {
+    script_location = "s3://${aws_s3_bucket.aws-glue-assets-563970825816-eu-west-1.bucket}/scripts/Transform NYC Taxi Trip Data.py"
+    python_version  = "3"
+  }
+  default_arguments = {
+    "--TempDir"                          = "s3://aws-glue-assets-563970825816-eu-west-1/temporary/"
+    "--enable-continuous-cloudwatch-log" = "true"
+    "--enable-glue-datacatalog"          = "true"
+    "--enable-job-insights"              = "false"
+    "--enable-metrics"                   = "true"
+    "--enable-observability-metrics"     = "true"
+    "--enable-spark-ui"                  = "true"
+    "--job-bookmark-option"              = "job-bookmark-disable"
+    "--job-language"                     = "python"
+    "--spark-event-logs-path"            = "s3://aws-glue-assets-563970825816-eu-west-1/sparkHistoryLogs/"
+  }
+}
