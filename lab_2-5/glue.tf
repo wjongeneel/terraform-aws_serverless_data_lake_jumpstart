@@ -99,3 +99,15 @@ resource "aws_glue_job" "transform_nyc_taxi_trip_data" {
     "--spark-event-logs-path"            = "s3://aws-glue-assets-563970825816-eu-west-1/sparkHistoryLogs/"
   }
 }
+
+resource "aws_glue_crawler" "nyc-yellow-tripdata-parquet-crawler" {
+  name          = "nyc-yellow-tripdata-parquet-crawler"
+  database_name = "nyctaxi-db"
+  role          = data.aws_iam_role.AWSGlueServiceRole-SDL-Jumpstart.arn
+  recrawl_policy {
+    recrawl_behavior = "CRAWL_EVERYTHING"
+  }
+  s3_target {
+    path = "s3://${data.aws_s3_bucket.taxi-trip-data-transformed.bucket}/nyc-taxi/yellow-tripdata"
+  }
+}
