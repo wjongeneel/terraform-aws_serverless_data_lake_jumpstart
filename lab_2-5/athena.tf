@@ -1,5 +1,5 @@
 resource "aws_athena_workgroup" "athena_workgroup_nyctaxi" {
-  name = "athena_workgroup_nyctaxi"
+  name          = "athena_workgroup_nyctaxi"
   force_destroy = true
   configuration {
     result_configuration {
